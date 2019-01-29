@@ -61,7 +61,7 @@ def generatePDF():
     return response
 
 
-@app.route('/pdf/multiple', methods=['POST'])
+@app.route('/pdf-multiple', methods=['POST'])
 def multiplePDF():
     name = request.args.get('filename', 'unnamed.pdf')
     app.logger.info('POST  /multiple?filename=%s' % name)
@@ -87,7 +87,7 @@ def generatePNG():
     return response
 
 
-@app.route('/png/multiple', methods=['POST'])
+@app.route('/png-multiple', methods=['POST'])
 def multiplePNG():
     name = request.args.get('filename', 'unnamed.png')
     app.logger.info('POST  /multiple?filename=%s' % name)
