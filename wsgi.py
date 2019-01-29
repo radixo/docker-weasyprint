@@ -48,9 +48,8 @@ def home():
         </ul>
     '''
 
-
 @app.route('/pdf', methods=['POST'])
-def generate():
+def generatePDF():
     name = request.args.get('filename', 'unnamed.pdf')
     app.logger.info('POST  /pdf?filename=%s' % name)
     html = HTML(string=request.data)
@@ -62,8 +61,8 @@ def generate():
     return response
 
 
-@app.route('/multiple', methods=['POST'])
-def multiple():
+@app.route('/pdf/multiple', methods=['POST'])
+def multiplePDF():
     name = request.args.get('filename', 'unnamed.pdf')
     app.logger.info('POST  /multiple?filename=%s' % name)
     htmls = json.loads(request.data.decode('utf-8'))
@@ -71,6 +70,32 @@ def multiple():
     pdf = documents[0].copy([page for doc in documents for page in doc.pages]).write_pdf()
     response = make_response(pdf)
     response.headers['Content-Type'] = 'application/pdf'
+    response.headers['Content-Disposition'] = 'inline;filename=%s' % name
+    app.logger.info(' ==> POST  /multiple?filename=%s  ok' % name)
+    return response
+
+@app.route('/png', methods=['POST'])
+def generatePNG():
+    name = request.args.get('filename', 'unnamed.png')
+    app.logger.info('POST  /png?filename=%s' % name)
+    html = HTML(string=request.data)
+    png = html.write_png()
+    response = make_response(png)
+    response.headers['Content-Type'] = 'image/png'
+    response.headers['Content-Disposition'] = 'inline;filename=%s' % name
+    app.logger.info(' ==> POST  /png?filename=%s  ok' % name)
+    return response
+
+
+@app.route('/png/multiple', methods=['POST'])
+def multiplePNG():
+    name = request.args.get('filename', 'unnamed.png')
+    app.logger.info('POST  /multiple?filename=%s' % name)
+    htmls = json.loads(request.data.decode('utf-8'))
+    documents = [HTML(string=html).render() for html in htmls]
+    png = documents[0].copy([page for doc in documents for page in doc.pages]).write_png()
+    response = make_response(png)
+    response.headers['Content-Type'] = 'image/png'
     response.headers['Content-Disposition'] = 'inline;filename=%s' % name
     app.logger.info(' ==> POST  /multiple?filename=%s  ok' % name)
     return response
