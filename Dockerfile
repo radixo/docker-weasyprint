@@ -1,4 +1,4 @@
-FROM alpine:edge
+FROM alpine:latest
 
 RUN apk add --no-cache python3 python3-dev py3-cffi cairo pango gdk-pixbuf \
   zlib-dev jpeg-dev build-base linux-headers msttcorefonts-installer \
