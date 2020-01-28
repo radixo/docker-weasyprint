@@ -1,0 +1,17 @@
+version: "3.5"
+services: 
+
+  superlogica-weasyprint:
+    build: .
+    hostname: superlogica-weasyprint  
+    ports:
+      - "9090:9090"   
+    volumes:
+      - ./:/opt
+    networks:
+      - developer
+
+networks:
+  developer:
+    name: superlogica_developer
+    external: true
